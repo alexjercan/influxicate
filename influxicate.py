@@ -19,7 +19,11 @@ class Args:
     sensors: str
 
     def __repr__(self) -> str:
-        return f"Args(url='{self.url}', org='{self.org}'), sensors='{self.sensors}'"
+        return (
+            f"Args(url='{self.url}',"
+            + f" org='{self.org}'),"
+            + f" sensors='{self.sensors}'"
+        )
 
 
 def parse_args():
@@ -97,16 +101,7 @@ def write_sensor(
     bucket: str,
     sensor: Sensor,
 ):
-    COL_TIME = "time"
-
-    df = pd.read_csv(sensor.path)
-    names = list(df.columns)
-
-    assert (
-        COL_TIME in names
-    ), f"The {COL_TIME} column is required to be present in the csv file"
-
-    df = df.set_index(COL_TIME)
+    df = pd.read_csv(sensor.path, index_col="time")
 
     for tag, tag_value in sensor.tags.items():
         df[tag] = tag_value
