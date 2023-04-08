@@ -477,3 +477,6 @@ ignored-argument-names = "_.*|^ignored_|^unused_"
 redefining-builtins-modules = ["six.moves", "past.builtins", "future.builtins", "builtins", "io"]
 
 [tool.pyright]
+
+[tool.black]
+line-length = 79
