@@ -101,12 +101,14 @@ def write_sensor(
     bucket: str,
     sensor: Sensor,
 ):
-    df = pd.read_csv(sensor.path, index_col="time")
+    df = pd.read_csv(sensor.path, index_col="time", parse_dates=True)
 
     for tag, tag_value in sensor.tags.items():
         df[tag] = tag_value
 
-    tag_columns = list(sensor.tags.keys())
+    df["date"] = df.index.date
+
+    tag_columns = list(sensor.tags.keys()) + ["date"]
 
     with client.write_api() as write_api:
         write_api.write(
